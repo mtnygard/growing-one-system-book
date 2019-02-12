@@ -16,7 +16,7 @@ Finally, a third factor. Putting this out in the open will apply some pressure t
 
 When Jesse wrote "Clouds to Code," LeanPub did not exist. GitHub didn't exist. In fact, Git itself probably didn't exist. "Agile" was still called "lightweight methods" and "the cloud" was what telephone company sales execs drew when they just didn't know where the call center was physically located. Today, we do things very differently. Incremental development and feedback help a project stay on track.
 
-I hope you will find the process interesting. Feel free to tweet at me (@mtnygard) or post an issue on Github. If, by some chance, you also find the system itself interesting, I would be delighted to hear about that too. Since my target user is mainly just me, I expect focus group testing to be pretty easy to arrange. On the other hand, myopia can set in quickly. Let me know where you see problems, edge cases, or howlers in the design. Please head to the [project repository](https://github.com/mtnygard/cloudseeding) and report an issue. You just might get incorporated into the next chapter!
+I hope you will find the process interesting. Feel free to tweet at me ([@mtnygard](https://twitter.com/mtnygard)) or post an issue on Github. If, by some chance, you also find the system itself interesting, I would be delighted to hear about that too. Since my target user is mainly just me, I expect focus group testing to be pretty easy to arrange. On the other hand, myopia can set in quickly. Let me know where you see problems, edge cases, or howlers in the design. Please head to the [project repository](https://github.com/mtnygard/cloudseeding) and report an issue. You just might get incorporated into the next chapter!
 
 ## My Commitments to You
 
