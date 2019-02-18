@@ -22,48 +22,4 @@ I hope you will find the process interesting rather than self-indulgent. Feel fr
 
 Dear reader, I commit to be open and intellectually honest in this process. I will not erase mistakes from the record, nor from previous chapters. Dead ends will remain dead ends. I will assume that your feedback and criticism comes from a place of generous contribution and positive intent. I may revise the prose of previous chapters, especially where your feedback tells me that I've skipped something in technical presentation. I may improve the clarity or sharpen the text to make it more useful to the next reader.
 
-## About the System
-
-Open sourcerors since ancient times advise, "scratch your own itch." Build that which is useful to you and use it. Be your own first customer. Then you know it can be used by at least one person and you understand that person's needs. That's the plan here.
-
-One of my most common engagements is an architecture review. These days most of them also relate to breaking big rocks into smaller rocks. In simpler days, the focus might have been to reduce TCO, improve stability, break down walls between groups, or just find performance problems. Whatever the ultimate aim, there's a component of the work that remains the same. Six to ten times a year, I need to enter a new complex environment, understand the existing landscape, and find points of leverage. I will have somewhere between a day and several weeks to assimilate knowledge about the current systems in place, and I'm usually learning from people who've been immersed in it for years. We call it "knowledge transfer" which sounds very orderly, like a row of neatly organized boxes waiting to be loaded into one's cortex. Orderly it is not.
-
-Rather than discussing every issue at the highest level of abstraction, then unpacking each one to the next level, and so on, the real work resembles a fractal. We dive deep in certain areas then surface back to the high level. I will leave "breadcrumbs" for myself to return to other areas for later exploration. We will sometimes shift gears from abstract architecture concerns to talk about authentication and authorization, or monitoring, or database schema design. We will shift from discussing the implementation style of a runtime component into delivery pipelines. Does it sound chaotic and disorganized? Sometimes it is!
-
-We often have some drawings or documents to supply the top-level structure. But even when talking through these, people think of other issues, or historical details, or they want to jump ahead to their most painful problems. Meetings can be contained to agendas, people much less so.
-
-As the receiver of the information, my task is to learn and remember. I will ask questions to clarify or understand, but I really don't like to ask the same question over and over again. As the river of information flows with its eddies and tributaries, I need to snare and organize the nuggets of information.
-
-There's one more dimension to complicate matters. The people who provide this information may be wrong. After all, what they each share with me is their own model of the system. There are times when the key people hold incoherent beliefs about the system in question. Overlay two partially filled-in maps and they may disagree even if some landmarks align.
-
-Ultimately, it's about integrating facts into a somewhat coherent model of the system, even when those facts arrive in fragments and may contradict each other. Most of the time I carry the model in a collection of documents, diagrams, and neurons, each with a partial, interlocking representation. Later, I interrogate that model to understand how the system-wide qualities are handled. I look for weak points, cut sets, immutable characteristics, fixed points, and points of leverage with high return.
-
-## Visual from Text
-
-Diagrams serve us well as tools for discussion and aids to memory. We're visual creatures, with something like half of all neural tissue involved in vision one way or another. Two thirds of our waking neural activity relates to vision according to [S.B. Sells and Richard S. Fixott](https://doi.org/10.1016/0002-9394(57)90012-0). Technical discussion without a whiteboard is like using Morse code for poetry... you can get the idea across but it take a long time and loses the impact. So pictures are essential.
-
-However, when the river of knowledge is flowing past you, it's impossible to halt discussion while you mouse around in Visio, OmniGraffle, or an EA tool. Given enough mobile phone pictures of whiteboards, like freeze-frames of an action scene, you might be able to reconstruct something later, but I find that time spent pushing polygons could be used better for almost anything else.
-
-So we have a paradox. Diagrams are supremely valuable, but time consuming to create. Quite a few people, myself included, have decided that the way to resolve this paradox is to treat diagrams as an output rather than a primary artifact. We'd prefer to generate diagrams from other representations---often just plain text with a thin DSL. Such text works well with our development tools and processes. It can be included in version control, with diffs and comments, and it can be published from a build pipeline. Generated diagrams may suffer in the aesthetic department, but that's an acceptable tradeoff.
-
-Some examples:
-
-- [Simon Brown](http://codingthearchitecture.com/)'s [C4 Model](https://c4model.com/) via [Structurizr](https://structurizr.com/)
-- [PlantUML](http://plantuml.com)
-- [Web Sequence Diagrams](https://www.websequencediagrams.com/)
-
-Of course, the grandparent of all text-to-diagram tools is AT&T's quirky, and somewhat over-extended, [Graphviz](http://graphviz.org). Early on, Graphviz demonstrated that textual input was valuable precisely because it could be the _output_ of other tools. We didn't need a different diagramming tool for every kind of language or toolchain if we could simply output DOT from a precarious pile of Perl scripts. Even better, if the diagrams' input comes from other tools' output, then we have at least a chance of keeping the visuals up to date with reality.
-
-So our system should be able to create diagrams from facts. That demands a lot more detail about how to project facts onto pictures, which detail I'm just going to wave my hands over and claim we'll "do something reasonable." (A trademark phrase from Dave Gillespie, one of my earliest CS instructors.)
-
-## Modes of Use
-
-For capturing facts, this system ought to be reachable from different devices at different times. I'd also like to pull knowledge and diagrams out via other tools or applications. That pushes me toward a web-based solution. (It won't come as a surprise that I decided that before picking a title for this book!) The system should have a highly-usable user interface and an API.
-
-What does highly-usable mean? This question comes up pretty often when we discuss architectural priorities. Among the canonical set of [architecture qualities](https://github.com/mtnygard/architecture-qualities) I use (from "Software Architecture in Practice, 3rd ed.", by Bass, Clements, and Kazman), we find "usability." What a subjective term! Usability depends on who the users are. It's much more about "fitness for purpose" rather than just having large, friendly buttons separated by copious whitespace. A system to be used very infrequently mainly by novices should have exactly those friendly buttons and whitespace. But a trading application for a fixed-income desk is just the opposite. There the users want maximum information density and clicking through a GUI is the opposite of usable.
-
-Who are the users here and what do they value? At first blush, it's just me. I value speed of entry and high mnemonic value. (I keep a lot of information in systems and tools. I call them my exo-cortex because I have a terribly inconsistent memory. Some days I can’t remember what I ate for lunch, but somehow I still recall how to start a machine language program on a C-64 and Merlin's cantrip from "Excalibur". It frustrates the hell out of me, but I've developed techniques to compensate.) As an example, I keep a lot of my personal notes and tasks in text files with Emacs' [org-mode](https://orgmode.org/) following a setup generously documented by [Bernt Hansen](http://doc.norang.ca/org-mode.html). When I recognize the need to record a to-do item, I alt-tab to Emacs and with one chord and a key, I can type the todo note. With two more keystrokes, I'm done and back to what I was doing before. The whole procedure takes half a second and only one "Emacs claw" (for the Control-Alt-R chord that kicks off the "remember" sequence.)
-
-## Volume
-
-My use will be sporadic and low-volume. One or two requests per second, tops. From a build server, I'd expect one request every few minutes. That suggests running the smallest infrastructure possible. How about zero? To the extent possible, I'd like to make this a "serverless" application.
+With that, let's explore the problem space in the next chapter.
