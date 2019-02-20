@@ -12,20 +12,20 @@ One more dimension complicates matters. The people may be wrong. After all, what
 
 Ultimately, it's about integrating facts into a somewhat coherent model of the system, even when those facts arrive in fragments and may contradict each other. Most of the time I carry the model in a collection of documents, diagrams, and neurons, each with a partial, interlocking representation. Later, I interrogate that model to understand how the system-wide qualities are handled. I look for weak points, cut sets, immutable characteristics, fixed points, and points of leverage with high return.
 
+This kind of system has been on my mind since the mid-2000's. I wrote an early prototype as a collection of Eclipse plugins, but honestly even I didn't get a lot of value out of it. (Mainly, I think it was too graphical, not textual enough.) I've noodled on the current incarnation, off and on, since about 2016. Even so, there is a vast gulf between vague daydreams and building something. We have to sacrifice the infinite space of possibilities to picking *one* thing to build. Oh, the pain of giving up all the things we choose not to build!
+
 ## Architecture Knowledge
 
-At first, I may just learn that something called "LP" exists. That is a fact, even if it isn't a very useful one. Still, if it has a name, it's worth recording. So I'd like to enter a fact that says "there exists a component called LP".
+At first, I may just learn that something called "LP" exists. That is a fact, even if it isn't a very useful one. Still, if it has a name, it's worth recording. So I'd like to enter a fact that says "there exists a component called LP". Later, I'll learn that "LP" is another name for the "Loan Processor" component. For now, let us say only that a component is an entity with a name and a meaningful boundary.
 
-The word "component" begs for a definition. For now, let us claim only that a component is an entity with a name and a meaningful boundary.
+Some components are more easily seen than others. A Linux container is surely a component. A single virtual machine, likewise. But several instances of that container may be used to implement the Loan Processor. So components may contain other components. Components certainly invoke other components, either inside a single process or across process boundaries. Is the Loan Processor just a single container? Or is it all the containers that run the same code? Or should we say it is the containers with their code, the database with its schema, the load balancers with their configuration, the firewalls with their rules, and so on...?
 
-Given a source repository, we can identify "this repository is a component" or we could say which source modules are inside that component... exactly those which reside in the repository. Subdividing the files inside a repo into different components might be trickier. Does a Java namespace constitute a component? That's up to the developers' interpretation.
-
-What about at runtime? We can comfortable call a Docker container a runtime component. A single virtual machine, likewise. An AWS Lambda function or Azure function certainly looks like a component. We will use an ecumenical approach. The system is about learning. Time spent arguing with the dev teams about what constitutes a component could be spent better on exploring more parts of the environment.
+We will use an ecumenical approach. The system is about learning. Time spent arguing with the dev teams about what constitutes a component could be spent better on exploring more parts of the environment.
 
 {aside}
-"What is architecture?" A question for the ages! One useful definition is "it's the stuff that is hard to change." Certainly true, but most easily seen in hindsight. [Ruth Malan](http://ruthmalan.com) describes architecture as those decisions that affect system-wide qualities. I often think of it as the set of decisions about patterns of interaction among components. It's not an academic question, since the system here is all about architecture.
+"What is architecture?" A question for the ages! Ruth Malan has a [great page](http://www.bredemeyer.com/whatis.htm) with many useful (and a few humorous) definitions. One useful definition is "it's the stuff that is hard to change." Certainly true, but most easily seen in hindsight. [Dana Bredemeyer](http://bredemeyer.com), a colleague of Ruth's, describes architecture decisions as "those that must be made from a system perspective to achieve system outcomes (capabilities and properties of the system)." I often think of it as the set of decisions about patterns of interaction among components.
 
-For the purposes of this book, architecure knowledge will begin with components and their relationships.
+For our purposes, architecure knowledge will begin with components and their relationships. Later, we may find opportunities to express the desired qualities in the system, but that is not a primary goal.
 {/aside}
 
 ## Visual from Text
@@ -139,6 +139,8 @@ That QAS touches output only, so it leaves us with room to make decisions about 
 ## Wrapping Up
 
 At this point, we have only the barest definition of this system. We know who the main user constituency is and their primary needs. We know that fact entry will be via text---though we have yet to define the format of that text---and that diagrams will be created from the facts.
+
+Next, it's time to actually get something up and running. Or at least shambling.
 
 {caption: Quality Attribute Scenarios}
 |============|============|============|============|
