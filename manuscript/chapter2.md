@@ -86,7 +86,8 @@ Some projects even record their decision to use architecture decision records. I
 I'm using [Nat Pryce's](https://github.com/npryce) [adr-tools](https://github.com/npryce/adr-tools) automation to keep my format consistent, which gives us ADR 1 as soon as we run `adr init`. It's visible in the source repository for the real system, but I'm also including it here in the book for clarity and ease of reading.
 
 {aside, class: discussion}
-# 1. Record architecture decisions
+
+## 1. Record architecture decisions
 
 Date: 2019-02-22
 
@@ -112,7 +113,8 @@ See Michael Nygard's article, linked above. For a lightweight ADR toolset, see N
 Where will this system run? How shall we build it? Where do we want to land on the spectrum from infrastructure to platform? It's time to make some decisions. I may regret some of these later, but let's get started and see what needs to be modified later.
 
 {aside, class: discussion}
-# 2. Use AWS
+
+## 2. Use AWS
 
 Date: 2019-02-22
 
@@ -162,7 +164,8 @@ Build and deployment tools have excellent support for AWS, so we expect to have 
 So now that we have the "where" identified, we also need to talk about "what" and "how"
 
 {aside, class: discussion}
-# 3. Rich front end with API
+
+## 3. Rich front end with API
 
 Date: 2019-02-22
 
@@ -201,7 +204,8 @@ We have an open question about testing, specifically how much integration testin
 {/aside}
 
 {aside, class: discussion}
-# 4. Clojure and ClojureScript
+
+## 4. Clojure and ClojureScript
 
 Date: 2019-02-22
 
