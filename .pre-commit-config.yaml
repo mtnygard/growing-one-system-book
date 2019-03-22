@@ -1,0 +1,18 @@
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.1.0  # Use the ref you want to point at
+    hooks:
+    -   id: check-byte-order-marker
+    -   id: check-case-conflict
+    -   id: check-json
+    -   id: check-executables-have-shebangs
+    -   id: check-xml
+    -   id: check-yaml
+    -   id: detect-aws-credentials
+    -   id: detect-private-key
+    -   id: end-of-file-fixer
+    -   id: mixed-line-ending
+    -   id: trailing-whitespace
+-   repo: https://github.com/Lucas-C/pre-commit-hooks
+    sha: v1.1.6
+    hooks:
+    -   id: remove-crlf
