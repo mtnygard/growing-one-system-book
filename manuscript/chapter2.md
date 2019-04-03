@@ -244,8 +244,8 @@ We will use Architecture Decision Records, as [described by Michael Nygard](http
 
 ### Consequences
 
-See Michael Nygard's article, linked above. For a lightweight ADR toolset, see Nat Pryce's [adr-tools](https://github.com/npryce/adr-tools).
-{/aside}
+See Michael Nygard's article, linked above. For a lightweight ADR toolset, see
+Nat Pryce's [adr-tools](https://github.com/npryce/adr-tools). {/aside}
 
 ### Infrastructure and Superstructure
 
@@ -297,7 +297,8 @@ denominator" functionality.
 
 We will build the system on AWS.
 
-Furthermore, we will embrace vendor services without attempting to wrap them or isolate ourselves from them.
+Furthermore, we will embrace vendor services without attempting to wrap them or
+isolate ourselves from them.
 
 ### Consequences
 
@@ -305,14 +306,18 @@ The dev team won't learn a new cloud platform.
 
 The reader will learn how to build a complete system with AWS.
 
-We will need to choose which AWS compute, storage, and networking services to use. Some of these choices will have serious cost implications.
+We will need to choose which AWS compute, storage, and networking services to
+use. Some of these choices will have serious cost implications.
 
 We have the option to use AWS Cognito for user management and access control.
 
-Build and deployment tools have excellent support for AWS, so we expect to have greater options with those.
+Build and deployment tools have excellent support for AWS, so we expect to have
+greater options with those.
+
 {/aside}
 
-So now that we have the "where" identified, we also need to talk about "what" and "how"
+So now that we have the "where" identified, we also need to talk about "what"
+and "how"
 
 {aside, class: discussion}
 
@@ -328,7 +333,8 @@ Accepted
 
 We need to define the basic architecture of the system.
 
-The GUI must be responsive. This implies at least some asynchronous behavior on the page, and probably means optimistic GUI updates.
+The GUI must be responsive. This implies at least some asynchronous behavior on
+the page, and probably means optimistic GUI updates.
 
 Server-side page rendering for form submission is slow and deeply unfashionable
 now.
@@ -473,11 +479,14 @@ There are libraries that use callbacks, and frameworks that have library
 functions to call. We apply the terms based on how the most important
 interactions flow.
 
+For this application, I've picked a framework that will be the basis for
+everything in the front end.
+
 ### Framing the Front End
 
 Lately, I've been working with a ClojureScript framework called
-[Re-frame](https://github.com/Day8/re-frame). Re-frame provides an
-out-of-the-box architecture for an SPA.
+[Re-frame](https://github.com/Day8/re-frame). Re-frame is a framework that
+provides an out-of-the-box architecture for an SPA.
 
 An out-of-the-box architecture is where the framework itself makes important
 decisions about the components you will build and their expected patterns of
@@ -509,10 +518,21 @@ a game engine:
    world.
 3. Invoke effect handlers, passing each the effects declared by the event
    handlers.
+4. Query the application state, according to subscriptions from views.
+5. Invoke view functions to return components and data.
+6. Render the components into the shadow DOM.
 
-Notice that the event handlers themselves don't really _do_ anything. They are
-pure functions, meaning that the function takes in data and returns data, but
-does not have any side effects.
+The main parts we write are the event handlers, effect handlers, queries, and
+and views. That's what makes Re-frame a framework. It owns the flow of control
+and our code plugs in at the leaves of the call tree.
+
+Something that takes a bit of getting used to in Re-frame applications: most of
+what we write are pure functions. Take the event handlers for example. They
+don't really _do_ anything. As pure functions, they just take in data and return
+data, but they don't have any side effects. In most application frameworks your
+event handlers are the main engine of change. Not in Re-frame. Here the event
+handlers specify in data what some other functions will apply to the world
+later.
 
 For example, suppose my UI has a button that says "log in." In the good old days
 of vanilla JavaScript, you might put an `onClick` handler on that button that
@@ -586,7 +606,12 @@ Clojure, but by convention it means "I'm not going to use this value." Also,
 notice that I'm no longer using a `let` to bind the new database value to a
 name... I just return it directly by having it be the last form in the function.
 
-My purpose here is not compression for its own sake, nor am I trying to play
+{aside}
+
+### Compression versus Comprehension
+
+M
+y purpose here is not compression for its own sake, nor am I trying to play
 code golf. My objective is to get rid of boilerplate and cruft so one glance at
 the code tells me what it does. I'm trying to optimize for code reading rather
 than code writing. There is definitely such a thing as going too far though. For
@@ -614,3 +639,59 @@ local, application-specific meaning. If I don't remember it, and `s!` is not
 visible when I look at `:begin-login`, then I need to navigate to it and
 navigate back to comprehend what I see. The mental overhead of that recall or
 navigation is not worth the characters saved.
+
+{/aside}
+
+So far, the event handler we wrote only sets a flag in our local database. Most
+of the time an action like "log in" requires some extra interaction with the
+world. Suppose we need to invoke a back end API function for authentication. The
+event handler _still_ doesn't directly do that invocation. Instead, it returns
+an effect map with additional effects specified. Re-frame will find an
+appropriate effect handler to invoke---or complain that no such effect exists,
+of course.
+
+Here's how an event handler for the `:begin-login` event might look:
+
+``` clojure
+(re-frame/reg-event-fx :begin-login             ;; 1
+  (fn [cofx _]                                  ;; 2
+     {:db (assoc (:db cofx) :logging-in? true)  ;; 3
+      :http {:method :post                      ;; 4
+             :url "/api/v1/auth"                ;; 5
+             :on-success [:login-succeeded]     ;; 6
+             :on-failure [:login-failed]}}))    ;; 7
+```
+
+Before we dive into the details of this function, notice two things. First, we
+didn't change the `:on-click` function in the view at all. We get that
+decoupling as a benefit of Re-frame's model.
+
+Second, there's a subtle change on line 1. Instead of calling `reg-event-db`,
+we're calling `reg-event-fx`. The difference has tripped me up more than once.
+`reg-event-db` registers an event handler that Re-frame will call with the
+current database and whose return value becomes the new database. But it turns
+out that `reg-event-db` is a convenience function. The more general version is
+`reg-event-fx`, which calls the event handler with a "coeffects map" and which
+returns an "effects map."
+
+For the moment, let's just think of the coeffects map as "everything the event
+handler needs to know about" and we won't worry about whose job it is to provide
+that map.
+
+The effects map that we return allows one event handler to specify multiple
+effects. Each key represents a different type of effect, and Re-frame uses those
+keys to locate the correct effect handler to call.
+
+On line 3, you can see that one of the effects we ask for is to update the
+database. The effect handler for `:db` directly takes the value from that key
+and splats it into the application database atom. (You might already be able to
+picture how `reg-event-db` works... it creates a wrapper function that calls
+your event handler then constructs a map with the `:db` and your function's
+return value.)
+
+Line 4 starts a new effect specification, for an effect handler called `:http`.
+That one doesn't come with Re-frame. It's something we will implement. The value
+of that effect is a map with some keys that we could use to issue an XHR.
+
+A Re-frame application will define a handful of effect handlers. Each one of
+defines its own micro-DSL for how the effect should be specified.
