@@ -88,7 +88,7 @@ achieve system outcomes (capabilities and properties of the system)." I often
 think of it as the set of decisions about patterns of interaction among
 components.
 
-For our purposes, architecure knowledge will begin with components and their
+For our purposes, architecture knowledge will begin with components and their
 relationships. Later, we may find opportunities to express the desired qualities
 in the system, but that is not a primary goal. {/aside}
 
