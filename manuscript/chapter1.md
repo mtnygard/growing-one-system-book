@@ -268,7 +268,7 @@ potential problem. Neither of those concepts are really isomorphic to the
 coverage of an NDA. I can imagine a hierarchy of projects performed for a single
 client, where one NDA would cover all. The problem is that I could equally
 imagine a hierarchy of clients---perhaps to model a multinational company and
-local subsidiaries. Does every client and every project define it's own
+local subsidiaries. Does every client and every project define its own
 confidentiality boundary? Are those nested? Should I be able to query across
 child projects or child clients?
 
