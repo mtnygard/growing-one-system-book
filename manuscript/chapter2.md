@@ -522,7 +522,7 @@ a game engine:
 5. Invoke view functions to return components and data.
 6. Render the components into the shadow DOM.
 
-The main parts we write are the event handlers, effect handlers, queries, and
+The main parts we write are the event handlers, effect handlers, queries,
 and views. That's what makes Re-frame a framework. It owns the flow of control
 and our code plugs in at the leaves of the call tree.
 
