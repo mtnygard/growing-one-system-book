@@ -209,7 +209,6 @@ book for clarity and ease of reading.
 > ### Consequences
 > 
 > See Michael Nygard's article, linked above. For a lightweight ADR toolset, see Nat Pryce's [adr-tools](https://github.com/npryce/adr-tools).
- bin/show-rev-file-lines.sh doc/adr/0001-record-architecture-decisions.md HEAD 1 $ | bin/indent-markdown.sh | bin/quote.sh
 
 ### Infrastructure and Superstructure
 
@@ -263,7 +262,6 @@ modified later.
 > We have the option to use AWS Cognito for user management and access control.
 > 
 > Build and deployment tools have excellent support for AWS, so we expect to have greater options with those.
- bin/adr.sh 0002-use-aws.md
 
 So now that we have the "where" identified, we also need to talk about "what"
 and "how"
@@ -304,7 +302,6 @@ and "how"
 > We have an open question about how to serve static assets and where they should live in the source tree.
 > 
 > We have an open question about testing, specifically how much integration testing is required.
- bin/adr.sh 0003-rich-front-end-with-api.md
 
 > ## 4. Clojure and ClojureScript
 > 
@@ -350,7 +347,6 @@ and "how"
 > Code will require more explanatory text due to the unfamiliar syntax.
 > 
 > Where possible, we can use isomorphic code between back-end and front-end.
- bin/adr.sh 0004-clojure-and-clojurescript.md
 
 ## Front to Back
 
@@ -623,3 +619,101 @@ of that effect is a map with some keys that we could use to issue an XHR.
 
 A Re-frame application will define a handful of effect handlers. Each one of
 defines its own micro-DSL for how the effect should be specified.
+
+
+## Assembling the Bones
+
+Front end development can be wonderful once you have a working build. Change a
+line of code and see its effect in milliseconds with hot reloading. Use the
+developer console to run snippets of code inside your environment. But getting that build working sometimes feels like doing a jigsaw puzzle without the picture on the box. Add in a transpiled language (or two!) and it can get positively maddening.
+
+I will try to keep the build as simple as possible. It starts with [Shadow-cljs](http://shadow-cljs.org/), which compiles ClojureScript, manages the CLJS dependencies, and does hot code reloading. It looks for a file called `shadow-cljs.edn`. "EDN" is short for Extensible Data Notation, which is a human-readable data serialization format. Think of it like JSON with better type preservation. EDN is commonly used in the Clojure ecosystem because it can be both read and emitted with just the core library.
+
+``` clojure
+{:source-paths ["src"]
+ :dependencies [[reagent "0.8.1"]
+                [re-frame "0.10.6"]
+                [binaryage/devtools "0.9.10"]
+                [thheller/shadow-cljsjs "0.0.16"]
+                [day8.re-frame/http-fx "0.1.6"]
+                [day8.re-frame/re-frame-10x "0.3.7-react16"]
+                [day8.re-frame/tracing "0.5.1"]]
+ :dev-http     {8080 {:root      "target/"
+                      :proxy-url "http://localhost:3000"}}
+ :builds       {:app {:output-dir       "target/"
+                      :asset-path       "."
+                      :target           :browser
+                      :modules          {:main {:init-fn igles.main/init}}
+                      :compiler-options {:closure-defines {"goog.DEBUG"                                 true
+                                                           "re_frame.trace.trace_enabled_QMARK_"        true
+                                                           "day8.re_frame.tracing.trace_enabled_QMARK_" true}}
+                      :devtools         {:preloads   [day8.re-frame-10x.preload
+                                                      devtools.preload]
+                                         :after-load igles.main/reload!}}}}
+```
+
+The dependencies on lines 2 through 8 are expresssed in a shorthand notation for Maven coordinates. In `shadow-cljs.edn` these are just little 2-vectors with a symbol as the first element and a string as the second. You could read this file into any other tool and manipulate its contents. It's just data. Shadow-cljs itself interprets the symbol by mapping the namespace (the part before the slash) as the Maven group ID and the part after the slash as the Maven artifact ID. The string identifies the version. Dependencies that don't have a namespace mean the group ID is the same as the artifact ID.
+
+We won't worry too much about the `:builds` section for now. Mostly we note that the output files go under `target`, which is also the root that our dev server can vend from. Also, we are targeting a browser for the build. Shadow-cljs can target Node for back end work as well.
+
+Under `:dev-http` we also see `:proxy-url`. This allows the front end code to make XHR calls to the same origin, and the dev server will transparently proxy through to a different server. This lets us mimic the deployment configuration a bit more closely, where we would have a single origin via a load balancer or other reverse proxy.
+
+`shadow-cljs watch app` will let us build the Clojurescript code with hot reloading. But we're still missing some pieces. Namely, we need an HTML file to load the app along with non-Clojurescript dependencies.
+
+I'm going to use Yarn to manage NPM packages and assemble things under `target`. The `package.json` file for that looks like this:
+
+
+```
+{
+  "name": "growing-one-system-fe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "shadow-cljs watch app",
+    "compile": "shadow-cljs compile app",
+    "release": "shadow-cljs release app",
+    "html": "mkdir -p target && cp assets/index.html target/",
+    "serve": "yarn html && http-server target/",
+    "del": "rm -r target/*",
+    "build": "yarn release && yarn html && yarn serve"
+  },
+  "author": "",
+  "license": "EPL-2.0",
+  "devDependencies": {
+    "highlight.js": "^9.15.6",
+    "http-server": "^0.11.1",
+    "react-flip-move": "^3.0.3",
+    "react-highlight.js": "^1.0.7",
+    "shadow-cljs": "^2.8.0"
+  },
+  "dependencies": {
+    "create-react-class": "^15.6.3",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5"
+  }
+}
+```
+
+Notice that the dependencies mainly revolve around React. Clojurescript doesn't know anything about React by itself. In order to make React visible within the Clojurescript code we do a little dance of assembly and loading.
+
+1. Use Yarn to install the packages under `node_modules`
+2. Use Yarn to copy our HTML source page (more about that in a minute) to `target`
+3. Use Shadow-cljs to compile the CLJS code to Javascript.
+4. The CLJS compiler uses Google Closure to bundle (and optionally minify) the generated code.
+
+Sometimes our HTML page will also need to directly load JS files to make them available for Clojurescript. In this case, Re-frame uses Reagent, which knows to load React so we don't have to do it by hand.
+
+Our HTML file looks like this:
+
+```
+<body>
+<div id="app"/>
+<script>var CLOSURE_UNCOMPILED_DEFINES = {"re_frame.trace.trace_enabled_QMARK_": true};</script>
+<script src="main.js" type="text/javascript"></script>
+<script>window.onload = function () { igles.main.init(); }</script>
+</body>
+```
+
+Pretty simple. When our app initializes, it will rewrite the contents of the `app` div with our UI. The bit about `CLOSURE_UNCOMPILED_DEFINES` just lets us use Re-frame's debugging tools. We'll remove that later.
+

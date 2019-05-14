@@ -479,3 +479,49 @@ of that effect is a map with some keys that we could use to issue an XHR.
 
 A Re-frame application will define a handful of effect handlers. Each one of
 defines its own micro-DSL for how the effect should be specified.
+
+
+## Assembling the Bones
+
+Front end development can be wonderful once you have a working build. Change a
+line of code and see its effect in milliseconds with hot reloading. Use the
+developer console to run snippets of code inside your environment. But getting that build working sometimes feels like doing a jigsaw puzzle without the picture on the box. Add in a transpiled language (or two!) and it can get positively maddening.
+
+I will try to keep the build as simple as possible. It starts with [Shadow-cljs](http://shadow-cljs.org/), which compiles ClojureScript, manages the CLJS dependencies, and does hot code reloading. It looks for a file called `shadow-cljs.edn`. "EDN" is short for Extensible Data Notation, which is a human-readable data serialization format. Think of it like JSON with better type preservation. EDN is commonly used in the Clojure ecosystem because it can be both read and emitted with just the core library.
+
+``` clojure
+!! bin/show-rev-file-lines.sh ui/shadow-cljs.edn skeleton-shambles 1 $
+```
+
+The dependencies on lines 2 through 8 are expresssed in a shorthand notation for Maven coordinates. In `shadow-cljs.edn` these are just little 2-vectors with a symbol as the first element and a string as the second. You could read this file into any other tool and manipulate its contents. It's just data. Shadow-cljs itself interprets the symbol by mapping the namespace (the part before the slash) as the Maven group ID and the part after the slash as the Maven artifact ID. The string identifies the version. Dependencies that don't have a namespace mean the group ID is the same as the artifact ID.
+
+We won't worry too much about the `:builds` section for now. Mostly we note that the output files go under `target`, which is also the root that our dev server can vend from. Also, we are targeting a browser for the build. Shadow-cljs can target Node for back end work as well.
+
+Under `:dev-http` we also see `:proxy-url`. This allows the front end code to make XHR calls to the same origin, and the dev server will transparently proxy through to a different server. This lets us mimic the deployment configuration a bit more closely, where we would have a single origin via a load balancer or other reverse proxy.
+
+`shadow-cljs watch app` will let us build the Clojurescript code with hot reloading. But we're still missing some pieces. Namely, we need an HTML file to load the app along with non-Clojurescript dependencies.
+
+I'm going to use Yarn to manage NPM packages and assemble things under `target`. The `package.json` file for that looks like this:
+
+
+```
+!! bin/show-rev-file-lines.sh ui/package.json skeleton-shambles 1 $
+```
+
+Notice that the dependencies mainly revolve around React. Clojurescript doesn't know anything about React by itself. In order to make React visible within the Clojurescript code we do a little dance of assembly and loading.
+
+1. Use Yarn to install the packages under `node_modules`
+2. Use Yarn to copy our HTML source page (more about that in a minute) to `target`
+3. Use Shadow-cljs to compile the CLJS code to Javascript.
+4. The CLJS compiler uses Google Closure to bundle (and optionally minify) the generated code.
+
+Sometimes our HTML page will also need to directly load JS files to make them available for Clojurescript. In this case, Re-frame uses Reagent, which knows to load React so we don't have to do it by hand.
+
+Our HTML file looks like this:
+
+```
+!! bin/show-rev-file-lines.sh ui/assets/index.html skeleton-shambles 1 $
+```
+
+Pretty simple. When our app initializes, it will rewrite the contents of the `app` div with our UI. The bit about `CLOSURE_UNCOMPILED_DEFINES` just lets us use Re-frame's debugging tools. We'll remove that later.
+
