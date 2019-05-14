@@ -2,7 +2,8 @@
 
 /^!! (.*)/ { 
     $1="";
-    system($0)
+    system($0);
+    next;
 }
 
 { print; }
