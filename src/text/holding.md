@@ -1,3 +1,35 @@
+
+## Development is Production
+
+For a long time, developers were like the cobbler's children. When we built
+tools that other people used to do their jobs, we would treat those tools as
+serious business. We'd put them into production environments and protect them.
+An outage for an internal tool, say a content management system for merchants,
+got treated as a serious problem that needed to be fixed. If the tool was down
+for any length of time, people could not do their jobs.
+
+So, a content management tool is a production-grade system that a group of users
+need to do their jobs.
+
+What part of that is *not* true for source control, build, testing, or
+deployment tools?
+
+Development tools are production-grade systems that a group of users need to do
+their jobs. If we want to get starchy about it, we could make a case that
+development tools are *more* critical than content management. The cost of idle
+developers is higher than the cost of idle merchants. And, if content goes
+stale, then at least old content remains visible. Imagine being unable to fix a
+critical bug in your revenue-generating system because your build tool is down.
+The cost mounts quickly!
+
+Historically, I was sometimes reluctant to put development tools under
+production-level protection, because it meant handing control over to an
+Operations group. Or worse, internal IT, who would try to centralize us all on
+one ancient PVCS installation. These days, though, we more often see a team
+dedicated to creating and operating the "ecosystem tools" who are much closer to
+development.
+
+
 # On Risk
 
 To most people the work "risk" conjures visions of a high-stakes blackjack game

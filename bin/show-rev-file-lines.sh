@@ -1,5 +1,4 @@
-#! /bin/bash
-
+#! /bin/bash 
 FILE=$1
 REV=${2:-HEAD}
 START=${3:-"1"}
