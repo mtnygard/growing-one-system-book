@@ -1,4 +1,6 @@
-# Introduction
+---
+title: Introduction
+...
 
 Let's build something together. In fact, let's build a real system running in production, with users and all. We will do it incrementally, in the cloud, with continuous delivery. And the whole process will be written down to show the twists, turns, and dead ends. Finally, just to make it even more visible and (potentially) embarrassing, let's put that historical record online incrementally too.
 

@@ -1,3 +1,7 @@
+---
+title: The Walking Skeleton
+...
+
 # The Walking Skeleton
 
 A "walking skeleton" does nothing, but it does nothing in a useful way. The
@@ -338,11 +342,11 @@ application-level event.
 Somewhere, we had better say how to handle such an event. That would look
 something like this:
 
-``` clojure
-(re-frame/reg-event-db :begin-login                     ;; 1
-  (fn [current-db event]                                ;; 2
-    (let [new-db (assoc current-db :logging-in? true)]  ;; 3
-      new-db))                                          ;; 4
+``` {.clojure .numberLines}
+(re-frame/reg-event-db :begin-login                     
+  (fn [current-db event]                                
+    (let [new-db (assoc current-db :logging-in? true)]  
+      new-db))                                          
 ```
 
 There's a lot packed into those five lines of code, so let's look at it step by step.
@@ -382,10 +386,10 @@ can otherwise get into.
 By the way, I wrote that example code in a verbose way to help separate concepts
 into lines. In a real application, I might do it more like this:
 
-``` clojure
-(re-frame/reg-event-db :begin-login             ;; 1
-  (fn [db _]                                    ;; 2
-    (assoc db :logging-in? true)))              ;; 3
+```{.clojure .numberLines}
+(re-frame/reg-event-db :begin-login             
+  (fn [db _]                                    
+    (assoc db :logging-in? true)))              
 ```
 
 The underscore `_` on line 2 is a legitmate identifier in ClojureScript and
@@ -436,14 +440,14 @@ of course.
 
 Here's how an event handler for the `:begin-login` event might look:
 
-``` clojure
-(re-frame/reg-event-fx :begin-login             ;; 1
-  (fn [cofx _]                                  ;; 2
-     {:db (assoc (:db cofx) :logging-in? true)  ;; 3
-      :http {:method :post                      ;; 4
-             :url "/api/v1/auth"                ;; 5
-             :on-success [:login-succeeded]     ;; 6
-             :on-failure [:login-failed]}}))    ;; 7
+```{.clojure .numberLines}
+(re-frame/reg-event-fx :begin-login             
+  (fn [cofx _]                                  
+     {:db (assoc (:db cofx) :logging-in? true)  
+      :http {:method :post                      
+             :url "/api/v1/auth"                
+             :on-success [:login-succeeded]     
+             :on-failure [:login-failed]}}))    
 ```
 
 Before we dive into the details of this function, notice two things. First, we
@@ -489,7 +493,7 @@ developer console to run snippets of code inside your environment. But getting t
 
 I will try to keep the build as simple as possible. It starts with [Shadow-cljs](http://shadow-cljs.org/), which compiles ClojureScript, manages the CLJS dependencies, and does hot code reloading. It looks for a file called `shadow-cljs.edn`. "EDN" is short for Extensible Data Notation, which is a human-readable data serialization format. Think of it like JSON with better type preservation. EDN is commonly used in the Clojure ecosystem because it can be both read and emitted with just the core library.
 
-``` clojure
+``` {.clojure .numberLines}
 !! bin/show-rev-file-lines.sh ui/shadow-cljs.edn skeleton-shambles 1 $
 ```
 
@@ -504,7 +508,7 @@ Under `:dev-http` we also see `:proxy-url`. This allows the front end code to ma
 I'm going to use Yarn to manage NPM packages and assemble things under `target`. The `package.json` file for that looks like this:
 
 
-```
+``` {.json .numberLines}
 !! bin/show-rev-file-lines.sh ui/package.json skeleton-shambles 1 $
 ```
 

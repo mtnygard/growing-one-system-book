@@ -1,0 +1,6 @@
+---
+title: Growing One System
+author: Michael Nygard
+rights: Commercial
+language: en-US
+...

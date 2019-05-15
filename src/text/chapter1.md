@@ -1,3 +1,8 @@
+---
+title: Vague Definitions
+stylesheet: tufte.css
+...
+
 # What We Are Building
 
 Open sourcerors since ancient times advise, "scratch your own itch." Build that
