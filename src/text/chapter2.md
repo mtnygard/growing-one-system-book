@@ -2,7 +2,7 @@
 title: The Walking Skeleton
 ...
 
-# The Walking Skeleton
+<section>
 
 A "walking skeleton" does nothing, but it does nothing in a useful way. The
 skeleton puts all the pieces in place, with calls that go from end to end, even
@@ -29,6 +29,8 @@ learn what the original decision should have been.
 Faced with this paradox, I choose to make decisions with an eye toward
 minimizing the cost of being wrong. That is, I would like to make the cost of
 changing or reversing one of these decisions bearable.
+
+</section>
 
 ## Make descisions orthogonal, not contingent
 
@@ -256,14 +258,18 @@ few factors:
    almost every module has an alternative or three.
 
 What's the difference between a library and a framework? A library is something
-that my code calls, but my code is still in control of the overall flow, as
-shown in figure 1. A framework is something that I may start up, but then it
+that my code calls[^lib], but my code is still in control of the overall flow,
+as shown in figure 1. A framework is something that I may start up, but then it
 takes over the control flow and calls my code. With a framework, my code is at
-the leaves of the call tree, as in figure 2.
+the leaves of the call tree, as in figure 2.[^framework]
 
-![Figure 1. Libraries are something I call](images/library.png)
+[^lib]: {-}
+  ![Libraries are something I call](images/library.png)
+  With a library, the library functions are the leaves of the call tree.
 
-![Figure 2. A framework calls me](images/framework.png)
+[^framework]: {-}
+  ![A framework calls me](images/framework.png)
+  A framework "takes over" the top level and calls back into my code. Of course, my code may also call other parts of the framework.
 
 Typical of human language, the edges of the two concepts blur into each other.
 There are libraries that use callbacks, and frameworks that have library
@@ -493,9 +499,7 @@ developer console to run snippets of code inside your environment. But getting t
 
 I will try to keep the build as simple as possible. It starts with [Shadow-cljs](http://shadow-cljs.org/), which compiles ClojureScript, manages the CLJS dependencies, and does hot code reloading. It looks for a file called `shadow-cljs.edn`. "EDN" is short for Extensible Data Notation, which is a human-readable data serialization format. Think of it like JSON with better type preservation. EDN is commonly used in the Clojure ecosystem because it can be both read and emitted with just the core library.
 
-``` {.clojure .numberLines}
-!! bin/show-rev-file-lines.sh ui/shadow-cljs.edn skeleton-shambles 1 $
-```
+!! bin/show-rev-file-lines.sh ui/shadow-cljs.edn skeleton-shambles 1 $ | bin/code-fence.sh clojure
 
 The dependencies on lines 2 through 8 are expresssed in a shorthand notation for Maven coordinates. In `shadow-cljs.edn` these are just little 2-vectors with a symbol as the first element and a string as the second. You could read this file into any other tool and manipulate its contents. It's just data. Shadow-cljs itself interprets the symbol by mapping the namespace (the part before the slash) as the Maven group ID and the part after the slash as the Maven artifact ID. The string identifies the version. Dependencies that don't have a namespace mean the group ID is the same as the artifact ID.
 

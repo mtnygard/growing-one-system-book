@@ -1,7 +1,5 @@
 # What to compile by default?
-SOURCES := src/text/introduction.md \
-	src/text/chapter1.md \
-	src/text/chapter2.md
+SOURCES := $(wildcard src/text/*.md)
 TARGETS := $(addprefix public/,$(notdir $(patsubst %.md,%.html,$(SOURCES))))
 
 STYLES := src/styles/tufte.css \

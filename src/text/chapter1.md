@@ -303,9 +303,10 @@ we'll encounter a product-oriented company. So we probably overload the term
 You can see how this one decision starts to drag other decisions into scope. I
 think of this as weaving an irrelevant dimension into our system. It becomes
 indivisible from the rest of the system. Every contingent decision restricts the
-generality of our system.
+generality of our system.[^bigger]
 
-{blurb} Don't use a "bigger" noun than required to represent a concept. {/blurb}
+[^bigger]:
+   {-}Don't use a noun with baggage if you can avoid it. "Project" implies more than scoping facts... it implies a lifecycle and maybe a team.
 
 What we want is just separate fact bases. That doesn't require any concept of
 client or project. We can leave those notions and their mappings to the user. Or
@@ -317,7 +318,10 @@ hard, to be sure, but it is also one of the architect's superpowers. We'll talk
 much more about naming later.
 
 For the purpose of confidentiality, let's call each fact base a "World" and
-write a quality attribute scenario about it.
+write a quality attribute scenario about it.[^world]
+
+[^world]:
+   Isn't "World" a bigger concept than a "Project?" If a world contains many projects, then it seems to be bigger. In this case though, I'm looking for fewer implied concepts that come along with the term. So I'm using "World" in the sense of "many-worlds" (which carries some frieght of its own.)
 
 Sec-1: "Under all circumstances, no output shall include facts from more than
 one World."
