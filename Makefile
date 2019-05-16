@@ -9,19 +9,23 @@ STYLES := src/styles/tufte.css \
 	src/styles/tufte-extra.css
 
 .PHONY: all
-all: prepare $(TARGETS) $(LPTARGETS)
+all: prepare $(TARGETS) prepare_leanpub $(LPTARGETS)
 
 # Note: you will need pandoc 2 or greater for this to work
 
 .PHONY: prepare
 prepare: 
-	@mkdir -p manuscript
-	cp -r src/images manuscript/
 	@mkdir -p public/styles
 	cp -r $(STYLES) public/styles
 	cp -r src/et-book public/
 	cp -r src/images public/
 
+.PHONY: prepare_leanpub
+prepare_leanpub:
+	@mkdir -p manuscript
+	cp -r src/images manuscript/
+	cp src/text/Book.txt manuscript
+	
 ## Generalized rule: how to build a .html file from each .md
 public/%.html: src/text/%.md tufte.html5 $(STYLES)
 	bin/preprocess.sh $< | pandoc \
@@ -41,4 +45,5 @@ manuscript/%.md: src/text/%.md
 .PHONY: clean
 clean:
 	rm $(TARGETS)
+	rm $(LPTARGETS)
 
