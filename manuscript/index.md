@@ -5,12 +5,7 @@ title: Growing One System
 
 <section>
 
-Let's build something together. In fact, let's build a real system running in
-production, with users and all. We will do it incrementally, in the cloud, with
-continuous delivery. And the whole process will be written down to show the
-twists, turns, and dead ends. Finally, just to make it even more visible and
-(potentially) embarrassing, let's put that historical record online
-incrementally too.
+Let's build something together. In fact, let's build a real system running in production, with users and all. We will do it incrementally, in the cloud, with continuous delivery. And the whole process will be written down to show the twists, turns, and dead ends. Finally, just to make it even more visible and (potentially) embarrassing, let's put that historical record online incrementally too.
 
 </section>
 
@@ -90,3 +85,6 @@ You just might get incorporated into the next chapter!
 
    - [Vague Definitions](01-definitions.html)
    - [The Walking Skeleton](02-walking-skeleton.html)
+   - [Documenting Architecture Decisions](03-documenting-architecture-decisions.html)
+   - [Front to Back](04-reframe-for-front-end.html)
+   - [Front End Build](05-front-end-build.html)

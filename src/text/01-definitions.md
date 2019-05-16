@@ -305,8 +305,8 @@ think of this as weaving an irrelevant dimension into our system. It becomes
 indivisible from the rest of the system. Every contingent decision restricts the
 generality of our system.[^bigger]
 
-[^bigger]:
-   {-}Don't use a noun with baggage if you can avoid it. "Project" implies more than scoping facts... it implies a lifecycle and maybe a team.
+[^bigger]: {-} 
+  Don't use a noun with baggage if you can avoid it. "Project" implies more than scoping facts... it implies a lifecycle, maybe a team, budget, etc.
 
 What we want is just separate fact bases. That doesn't require any concept of
 client or project. We can leave those notions and their mappings to the user. Or
@@ -320,7 +320,7 @@ much more about naming later.
 For the purpose of confidentiality, let's call each fact base a "World" and
 write a quality attribute scenario about it.[^world]
 
-[^world]:
+[^world]: {-}
    Isn't "World" a bigger concept than a "Project?" If a world contains many projects, then it seems to be bigger. In this case though, I'm looking for fewer implied concepts that come along with the term. So I'm using "World" in the sense of "many-worlds" (which carries some frieght of its own.)
 
 Sec-1: "Under all circumstances, no output shall include facts from more than
@@ -338,7 +338,7 @@ the main user constituency is and their primary needs. We know that fact entry
 will be via text---though we have yet to define the format of that text---and
 that diagrams will be created from the facts.
 
-Next, it's time to actually get something up and running. Or at least shambling.
+Next, it's time to actually get something up and running. Or at least shambling. Let's get a [walking skeleton](02-walking-skeleton.html) going.
 
 +------------+-------------+-------------------+-----------------------------------------------------+
 | ID         | Quality     | Attribute         | Scenario                                            |
