@@ -1,6 +1,7 @@
 # What to compile by default?
 SOURCES := $(wildcard src/text/*.md)
 TARGETS := $(addprefix public/,$(notdir $(patsubst %.md,%.html,$(SOURCES))))
+LPTARGETS := $(addprefix manuscript/,$(notdir $(wildcard src/text/*.md)))
 
 STYLES := src/styles/tufte.css \
 	src/styles/pandoc.css \
@@ -8,12 +9,14 @@ STYLES := src/styles/tufte.css \
 	src/styles/tufte-extra.css
 
 .PHONY: all
-all: prepare $(TARGETS)
+all: prepare $(TARGETS) $(LPTARGETS)
 
 # Note: you will need pandoc 2 or greater for this to work
 
 .PHONY: prepare
 prepare: 
+	@mkdir -p manuscript
+	cp -r src/images manuscript/
 	@mkdir -p public/styles
 	cp -r $(STYLES) public/styles
 	cp -r src/et-book public/
@@ -31,6 +34,9 @@ public/%.html: src/text/%.md tufte.html5 $(STYLES)
 		--template=tufte \
 		$(foreach style,$(STYLES),--css $(addprefix styles/,$(notdir $(style)))) \
 		--output $@	
+
+manuscript/%.md: src/text/%.md 
+	bin/preprocess.sh $< > $@
 
 .PHONY: clean
 clean:
