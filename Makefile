@@ -32,7 +32,7 @@ public/%.html: src/text/%.md tufte.html5 $(STYLES)
 		--katex \
 		--section-divs \
 		--from markdown+tex_math_single_backslash+grid_tables+table_captions \
-		--filter pandoc-sidenote \
+		--filter bin/pandoc-sidenote \
 		--to html5+smart \
 		--metadata-file=src/metadata.txt \
 		--template=tufte \
