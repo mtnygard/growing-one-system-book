@@ -88,7 +88,5 @@ howlers in the design. Please head to the [project
 repository](https://github.com/mtnygard/growing-one-system) and report an issue.
 You just might get incorporated into the next chapter!
 
-   - [Vague Definitions](chapter1.html)
-   - [The Walking Skeleton](chapter2.html)
-   - [Colophon](colophon.html)
-   - [Growing One System](index.html)
+   - [Vague Definitions](01-definitions.html)
+   - [The Walking Skeleton](02-walking-skeleton.html)

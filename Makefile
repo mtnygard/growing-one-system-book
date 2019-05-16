@@ -44,6 +44,5 @@ manuscript/%.md: src/text/%.md
 
 .PHONY: clean
 clean:
-	rm $(TARGETS)
-	rm $(LPTARGETS)
+	-rm -r public manuscript
 

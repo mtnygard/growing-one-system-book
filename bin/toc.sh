@@ -8,7 +8,13 @@ exit
 
 #BEGIN_AWK1
 BEGIN       {
-                FS = ": *"; 
+                if (fname == "index.md") {
+                    exit;
+                }
+                if (fname == "colophon.md") {
+                    exit;
+                }
+                FS = ": *";
                 gsub(".md", ".html", fname);
             }
 /^---/      { p=1 };
