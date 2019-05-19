@@ -9,6 +9,14 @@ Let's build something together. In fact, let's build a real system running in pr
 
 </section>
 
+## Contents
+
+   - [Vague Definitions](01-definitions.html)
+   - [The Walking Skeleton](02-walking-skeleton.html)
+   - [Documenting Architecture Decisions](03-documenting-architecture-decisions.html)
+   - [Front to Back](04-reframe-for-front-end.html)
+   - [Front End Build](05-front-end-build.html)
+
 ## Why Read This Book
 
 If you're interested in seeing a continuously-deployed, microservice-based,
@@ -82,9 +90,3 @@ myopia can set in quickly. Let me know where you see problems, edge cases, or
 howlers in the design. Please head to the [project
 repository](https://github.com/mtnygard/growing-one-system) and report an issue.
 You just might get incorporated into the next chapter!
-
-   - [Vague Definitions](01-definitions.html)
-   - [The Walking Skeleton](02-walking-skeleton.html)
-   - [Documenting Architecture Decisions](03-documenting-architecture-decisions.html)
-   - [Front to Back](04-reframe-for-front-end.html)
-   - [Front End Build](05-front-end-build.html)

@@ -9,6 +9,10 @@ Let's build something together. In fact, let's build a real system running in pr
 
 </section>
 
+## Contents
+
+!! bin/toc.sh
+
 ## Why Read This Book
 
 If you're interested in seeing a continuously-deployed, microservice-based,
@@ -82,5 +86,3 @@ myopia can set in quickly. Let me know where you see problems, edge cases, or
 howlers in the design. Please head to the [project
 repository](https://github.com/mtnygard/growing-one-system) and report an issue.
 You just might get incorporated into the next chapter!
-
-!! bin/toc.sh
